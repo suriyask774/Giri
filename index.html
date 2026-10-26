@@ -269,14 +269,15 @@ let yesScale = 1;
 const bgMusic = document.getElementById("bgMusic");
 
 // Autoplay handler with user interaction fallback
-function openEnv(){
-    if (opened) return;
-
-    opened = true;
-
-    // Start background music after the user's tap
-    bgMusic.play().catch(error => {
-        console.log("Music could not play:", error);
+window.addEventListener("DOMContentLoaded", () => {
+    bgMusic.play().catch(() => {
+        const startAudio = () => {
+            bgMusic.play();
+            document.removeEventListener("click", startAudio);
+            document.removeEventListener("touchstart", startAudio);
+        };
+        document.addEventListener("click", startAudio);
+        document.addEventListener("touchstart", startAudio);
     });
 
     // Keep the rest of your existing openEnv() code below
